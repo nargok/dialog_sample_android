@@ -9,6 +9,9 @@ class AlarmBroadCastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
-        Toast.makeText(context, "アラームを受信しました", Toast.LENGTH_SHORT).show()
+        val mainIntent = Intent(context, MainActivity::class.java)
+                .putExtra("onReceive", true)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(mainIntent)
     }
 }

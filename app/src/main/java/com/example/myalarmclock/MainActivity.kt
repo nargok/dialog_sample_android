@@ -11,10 +11,23 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TimeAlartDialog.Listener {
+    override fun getUp() {
+        Toast.makeText(this, "起きるがクリックされました", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun snooze() {
+        Toast.makeText(this, "あと5分がクリックされました", Toast.LENGTH_SHORT).show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (intent?.getBooleanExtra("onReceive", false) == true) {
+            val dialog = TimeAlartDialog()
+            dialog.show(supportFragmentManager, "alert_dialog")
+        }
+
         setContentView(R.layout.activity_main)
 
         // AlarmManagerに時刻と実施するintentを登録する
