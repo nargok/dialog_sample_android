@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -23,6 +24,11 @@ class MainActivity : AppCompatActivity() {
             // 5秒後にアラーム処理を実行する
             calendar.add(Calendar.SECOND, 5)
             setAlarmManager(calendar)
+        }
+
+        cancelAlarm.setOnClickListener {
+            cancelAlarmManager()
+            Toast.makeText(this, "アラームをキャンセルしました", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -44,5 +50,12 @@ class MainActivity : AppCompatActivity() {
                 am.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pending)
             }
         }
+    }
+
+    private fun cancelAlarmManager() {
+        val am = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmBroadCastReceiver::class.java)
+        val pending = PendingIntent.getBroadcast(this, 0, intent, 0)
+        am.cancel(pending)
     }
 }
