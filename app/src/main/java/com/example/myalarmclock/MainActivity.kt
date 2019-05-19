@@ -13,7 +13,15 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), TimeAlartDialog.Listener {
     override fun getUp() {
-        Toast.makeText(this, "起きるがクリックされました", Toast.LENGTH_SHORT).show()
+        finish()
+    }
+
+    override fun finish() {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.add(Calendar.MINUTE, 5)
+        setAlarmManager(calendar)
+        finish()
     }
 
     override fun snooze() {
