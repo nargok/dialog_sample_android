@@ -42,7 +42,7 @@ class TimeAlartDialog: DialogFragment() {
 }
 
 
-class DatePickerDialog: DialogFragment(), DatePickerDialog.OnDateSetListener {
+class DatePickerFragment: DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     interface OnDateSelectedListener {
         fun onSelected(year: Int, month: Int, date: Int)
@@ -76,7 +76,7 @@ class DatePickerDialog: DialogFragment(), DatePickerDialog.OnDateSetListener {
     }
 }
 
-class TiemPickerDialog: DialogFragment(), TimePickerDialog.OnTimeSetListener {
+class TimePickerFragment: DialogFragment(), TimePickerDialog.OnTimeSetListener {
 
     interface OnTimeSelectedListener {
         fun onSelected(hourOfDay: Int, minute: Int)
