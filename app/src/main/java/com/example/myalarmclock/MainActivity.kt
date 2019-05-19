@@ -1,6 +1,7 @@
 package com.example.myalarmclock
 
 import android.app.AlarmManager
+import android.app.KeyguardManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -8,6 +9,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.view.WindowManager.LayoutParams.*
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.ParseException
@@ -48,6 +50,31 @@ class MainActivity : AppCompatActivity(), TimeAlartDialog.Listener
         super.onCreate(savedInstanceState)
 
         if (intent?.getBooleanExtra("onReceive", false) == true) {
+            // スリープ中もダイヤログを表示するようにする
+            when {
+                // Android 8.0以上
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 -> {
+                    setShowWhenLocked(true)
+                    setTurnScreenOn(true)
+                    // KeyguardManager -> 端末のロックとロック解除を制御するクラス
+                    val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                    keyguardManager.requestDismissKeyguard(this, null)
+                }
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+                    window.addFlags(
+                        FLAG_TURN_SCREEN_ON or FLAG_SHOW_WHEN_LOCKED
+                    )
+                    val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+                    keyguardManager.requestDismissKeyguard(this, null)
+                }
+                else -> {
+                    window.addFlags(
+                        FLAG_TURN_SCREEN_ON or FLAG_SHOW_WHEN_LOCKED or FLAG_DISMISS_KEYGUARD
+                    )
+                }
+            }
+
+
             val dialog = TimeAlartDialog()
             dialog.show(supportFragmentManager, "alert_dialog")
         }
